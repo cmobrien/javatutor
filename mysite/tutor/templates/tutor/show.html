@@ -1,0 +1,44 @@
+<link rel="stylesheet" type="text/css" href="/tutor/static/tutor/codemirror/lib/codemirror.css"></link>
+<link rel="stylesheet" type="text/css" href="/tutor/static/tutor/codemirror/theme/eclipse.css"></link>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/sunny/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="/tutor/static/tutor/css/problem.css"></link>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+<script src="/tutor/static/tutor/codemirror/lib/codemirror.js"></script>
+<script src="/tutor/static/tutor/codemirror/mode/python/python.js"></script>
+<script src="/tutor/static/tutor/codemirror/mode/clike/clike.js"></script>
+<script src="/tutor/static/tutor/js/problem.js"></script>
+<script src="/tutor/static/tutor/js/autosize.js"></script>
+
+{% csrf_token %}
+
+<h1>{{ name }}</h1>
+
+<div class = "problem_text">{{problem.problem}}</div>
+
+  <div class = "wrapper">
+    <div class = "container python">
+      <div class = "code_container">
+        <textarea id = "id_python" name = "python">{{problem.python}}</textarea>
+      </div>
+      <div id = "test_summary"></div>
+    </div>
+    <div class = "container java">
+    	<form method="post">
+    	<div class = "code_container">
+    			<textarea id = "id_response_code" name = "response_code">{{response.code}}</textarea>
+    	</div>
+    	</form>
+    	<button id = "compile">Compile</button>
+    	<button id = "run" disabled = "true">Run</button>
+    	<div id = "compilation_status"></div>
+    	<div id = "test_results"></div>
+		</div>
+
+
+    </div>
+  </div>
+
+  <div id = "overlay"></div>
+
+

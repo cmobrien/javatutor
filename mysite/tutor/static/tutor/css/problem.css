@@ -1,0 +1,150 @@
+html { overflow-y: scroll; }
+
+body {
+	margin: 30px;
+}
+
+p {
+	padding: 0px;
+	margin-top: 0px;
+}
+
+.underline-error {
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAACCAYAAAB/qH1jAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QUXCToH00Y1UgAAACFJREFUCNdjPMDBUc/AwNDAAAFMTAwMDA0OP34wQgX/AQBYgwYEx4f9lQAAAABJRU5ErkJggg==);
+    background-position: bottom left;
+    background-repeat: repeat-x;
+}
+
+.results {
+	spacing: 10px;
+}
+
+.error, .pass, .fail, .summary {
+	border-radius:10px;
+	padding: 10px;
+	margin:20px 0px;
+	font-family:monospace;
+	overflow:auto;	
+}
+
+.toggler {
+	margin-top:3px;
+}
+
+.error {
+	border:1px solid red;
+	background-color:rgb(255, 204, 204);
+}
+
+.pass {
+	border:1px solid green;
+	background-color:rgb(204, 255, 204);
+}
+
+.fail {
+	border:1px solid blue;
+	background-color:rgb(204, 204, 255);
+}
+
+.summary {
+	border: 1px solid black;
+	background-color:rgb(220, 220, 220);
+	margin-bottom:40px;
+}
+
+.summary_result {
+	margin-left:40px;
+	padding-left:40px;
+	margin:10px 0px;
+}
+
+.run_count, .error_count, .fail_count {
+	padding: 2px;
+}
+
+.error_count {
+	background-color: rgb(255, 204, 204);
+	border: 1px solid red;
+}
+
+.fail_count {
+	background-color: rgb(204, 204, 255);
+	border: 1px solid blue;
+}
+
+.problem_text {
+	margin-bottom:20px;
+	font-size:15px;
+}
+
+.spacing_above {
+	margin-top: 10px;
+	margin-bottom:10px;
+}
+
+.error_line, .error_substrings {
+	display:none;
+}
+
+.error-gutter {
+	width: 11px;
+	background:rgb(205, 205, 205);
+}
+
+.ui-tooltip {
+	background:rgb(255, 255, 204);
+	font-family:monospace;
+	border-radius:0px;
+	border:0px;
+	font-size:11px;
+	padding: 2px;
+}
+
+.container {
+	width: 49%;
+}
+
+.python {
+	float: left;
+}
+
+.java {
+	float: right;
+}
+
+.test_result_left {
+	float: left;
+	width: 3%;
+}
+
+.test_result_right {
+	float: left;
+	width:97%;
+}
+
+.code_container {
+	border: 1px solid black;
+}
+
+#test_summary {
+	margin-top: 60px;
+}
+
+#id_response_result {
+	border: none;
+	width:100%;
+	resize:none;
+	font-family: monospace;
+	color:black;
+	}
+
+#overlay {
+    z-index: 999;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display:none;
+    cursor:wait;
+}​

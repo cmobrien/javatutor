@@ -1,0 +1,25 @@
+digraph test123 {
+  size = "12, 12";
+  "Static Typing" [style = filled, fillcolor = red];
+  Printing;
+  Types -> Primitives [style = dotted];
+  Operators -> Types;
+  Casting -> "Static Typing", Variables, Types;
+  Variables -> "Static Typing";
+  Parameters -> Types;
+  Scoping -> Variables;
+  "Control Flow" -> Scoping, "Prefix/Postfix", Arrays;
+  Fields -> Variables, Primitives;
+  Methods -> Parameters, Static, "Public/Private";
+  Objects -> Fields, "Public/Private", Methods, Constructors;
+  Constructors -> Methods;
+  Equals -> Primitives, Objects;
+  Subclasses -> Objects;
+  Inheritance -> Objects, Subclasses, Interfaces, "Abstract Classes";
+  Interfaces -> Objects;
+  "Abstract Classes" -> Objects;
+  Exceptions -> Objects, "Checked/Unchecked";
+  Collections -> Interfaces;
+  Lists -> Collections;
+  Sets -> Collections;
+}

@@ -1,0 +1,1 @@
+For this problem we explore the differences between equality in Python and in Java. Complete the following Java code to test the equality of integers and strings.

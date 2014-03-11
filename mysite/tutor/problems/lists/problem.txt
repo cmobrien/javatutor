@@ -1,0 +1,1 @@
+For this problem we explore the differences between the API's for Python lists and Java Lists. Complete the following Java code to index into, append to, and remove from a List.

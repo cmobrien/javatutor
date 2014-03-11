@@ -1,0 +1,167 @@
+{"concepts": [
+	{
+		"name": "Printing",
+		"prerequisites": [],
+		"assumed": []
+	},
+	{	
+		"name": "Types",
+		"prerequisites": ["Primitives"],
+		"assumed": []
+	},
+	{
+		"name": "Primitives",
+		"prerequisites": [],
+		"assumed": []
+	},
+	{
+		"name": "Casting",
+		"prerequisites": ["Variables", "Types"],
+		"assumed": []
+	},
+	{
+		"name": "Variables",
+		"prerequisites": ["Types"],
+		"assumed": []
+	},
+	{
+		"name": "Parameters",
+		"prerequisites": ["Types"],
+		"assumed": []
+	},
+	{
+		"name": "Scoping",
+		"prerequisites": ["Variables"],
+		"assumed": []
+	},
+	{
+		"name": "Prefix/Postfix",
+		"prerequisites": [],
+		"assumed": []
+	},
+	{
+		"name": "Arrays",
+		"prerequisites": ["Types"],
+		"assumed": []
+	},
+	{
+		"name": "Looping",
+		"prerequisites": ["Scoping", "Prefix/Postfix", "Arrays"],
+		"assumed": []
+	},
+	{
+		"name": "Conditionals",
+		"prerequisites": ["Scoping"],
+		"assumed": []
+	},
+	{
+		"name": "Iterators",
+		"prerequisites": ["Looping"],
+		"assumed": []
+	},
+	{
+		"name": "Fields",
+		"prerequisites": ["Variables", "Public/Private", "Static"],
+		"assumed": []
+	},
+	{
+		"name": "Methods",
+		"prerequisites": ["Basic Methods", "Static", "Public/Private"],
+		"assumed": []
+	},
+	{
+		"name": "Basic Methods",
+		"prerequisites": ["Parameters", "Scoping"],
+		"assumed": []
+	},
+	{
+		"name": "Objects",
+		"prerequisites": ["Constructors", "Fields"],
+		"assumed": []
+	},
+	{
+		"name": "Public/Private",
+		"prerequisites": [],
+		"assumed": []
+	},
+	{
+		"name": "Static",
+		"prerequisites": [],
+		"assumed": []
+	},
+	{
+		"name": "Constructors",
+		"prerequisites": ["Basic Methods"],
+		"assumed": []
+	},
+	{
+		"name": "Equality",
+		"prerequisites": ["Objects", "Basic Equality"],
+		"assumed": []
+	},
+	{
+		"name": "Basic Equality",
+		"prerequisites": ["Strings", "Primitives"],
+		"assumed": []
+	},
+	{
+		"name": "Strings",
+		"prerequisites": [],
+		"assumed": []
+	},
+	{
+		"name": "Inheritance",
+		"prerequisites": ["Objects"],
+		"assumed": []
+	},
+	{
+		"name": "Interfaces",
+		"prerequisites": ["Objects"],
+		"assumed": []
+	},
+	{
+		"name": "Abstract Classes",
+		"prerequisites": ["Objects"],
+		"assumed": []
+	},
+	{
+		"name": "Exceptions",
+		"prerequisites": ["Objects"],
+		"assumed": []
+	},
+	{
+		"name": "Collections",
+		"prerequisites": ["Interfaces"],
+		"assumed": []
+	},
+	{
+		"name": "Basic Lists",
+		"prerequisites": ["Types"],
+		"assumed": []
+	},
+	{
+		"name": "Hashing",
+		"prerequisites": ["Equality"],
+		"assumed": []
+	},
+	{
+		"name": "Lists",
+		"prerequisites": ["Collections", "Basic Lists"],
+		"assumed": []
+	},
+	{
+		"name": "Basic Maps",
+		"prerequisites": ["Types"],
+		"assumed": []
+	},
+	{
+		"name": "Sets",
+		"prerequisites": ["Collections", "Hashing"],
+		"assumed": []
+	},
+	{
+		"name": "Maps",
+		"prerequisites": ["Collections", "Hashing", "Basic Maps"],
+		"assumed": []
+	}
+]}

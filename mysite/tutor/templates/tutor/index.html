@@ -1,0 +1,33 @@
+<LINK href="/tutor/static/tutor/css/test.css" rel="stylesheet" type="text/css"></LINK>
+<link href="/tutor/static/tutor/codemirror/lib/codemirror.css"></script>
+<script src="/tutor/static/tutor/codemirror/lib/codemirror.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="/tutor/static/tutor/js/test.js"></script>
+
+Errors:
+<ul>
+	{% for error in errors %}
+		<li>{{error}}</li>
+	{% endfor %}
+</ul>
+
+Created:
+<ul>
+	{% for problem in created %}
+		<li>{{problem}}</li>
+	{% endfor %}
+</ul>
+
+Updated:
+<ul>
+	{% for problem in updated %}
+		<li>{{problem}}</li>
+	{% endfor %}
+</ul>
+
+Current:
+<ul>
+	{% for problem in current %}
+		<li><a href = "/tutor/{{ problem.id }}/">{{ problem.name }}</a></li>
+	{% endfor %}
+</ul>
