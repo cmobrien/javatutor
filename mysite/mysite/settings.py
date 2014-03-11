@@ -83,6 +83,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = "/Users/cmobrien10/Documents/SuperUROP/test/mysite/static/"
+STATIC_ROOT = "/Users/cmobrien10/Documents/SuperUROP/javatutor/mysite/static/"
 
 CODEMIRROR_PATH = "/tutor/codemirror/"
