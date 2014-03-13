@@ -148,3 +148,11 @@ p {
     display:none;
     cursor:wait;
 }​
+
+.CodeMirror-linenumbers {
+    background: black;
+}
+
+#reset {
+	float: right;
+}

@@ -8,5 +8,7 @@ urlpatterns = patterns('',
     url(r'^$', views.index, name='index'),
     url(r'^compile$', views.compile, name='compile'),
     url(r'^run$', views.run, name='run'),
+    url(r'^read$', views.read, name = 'read'),
+    url(r'^reset$', views.reset, name = 'reset'),
     url(r'^(?P<problem_id>\d+)/$', views.show, name='show')
 ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

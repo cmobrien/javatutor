@@ -21,3 +21,10 @@
 
 .cm-s-eclipse .CodeMirror-activeline-background {background: #e8f2ff !important;}
 .cm-s-eclipse .CodeMirror-matchingbracket {outline:1px solid grey; color:black !important;}
+
+.pass .cm-s-eclipse.CodeMirror { background:rgb(230, 255, 230); }
+.fail .cm-s-eclipse.CodeMirror { background:rgb(230, 230, 255); }
+.error .cm-s-eclipse.CodeMirror { background:rgb(255, 230, 230); }
+.pass .CodeMirror-linenumbers { background:rgb(240, 255, 240); }
+.fail .CodeMirror-linenumbers { background:rgb(240, 240, 255); }
+.error .CodeMirror-linenumbers { background:rgb(255, 240, 240); }

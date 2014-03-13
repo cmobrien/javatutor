@@ -1,7 +1,9 @@
 $(document).ready(function(){
     setUpCodeMirror();
+    getCode();
     configureButtons();
     $(document).tooltip();
+    configureSave();
 });
 
 // Convert the Python and Java code textareas to CodeMirror
@@ -54,8 +56,34 @@ var configureButtons = function() {
             run_button.attr('disabled', true);
         }
     })
+
+    var reset_button = $('#reset');
+    if (reset_button != null) {
+        reset_button.on('click', function(event) {
+            event.preventDefault();
+            resetCode();
+        })
+    }
 }
 
+// Override Ctrl-S to always take the next available step (either compile or run,
+// maybe neither are available) when pressed inside the Java CodeMirror window.
+var configureSave = function() {
+    $('.java').bind('keydown', function(event) {
+        if (event.ctrlKey || event.metaKey) {
+            if (String.fromCharCode(event.which).toLowerCase() == 's') {
+                event.preventDefault();
+                var compile_disabled = $('#compile').attr('disabled');
+                var run_disabled = $('#run').attr('disabled');
+                if (compile_disabled && !run_disabled) {
+                    runCode();
+                } else if (run_disabled && !compile_disabled) {
+                    compileCode();
+                }
+            }
+        }
+    });
+}
 
 // Underline an error in java_codemirror. The error will be underlined on
 // line_number, in [start, end). Message will appear as a tooltip.
@@ -84,6 +112,50 @@ var addError = function(line_number, message) {
     error_icon.attr('title', message)
     error_icon.tooltip({"tooltipClass": "ui-tooltip"});
     java_codemirror.setGutterMarker(line_number - 1, "error-gutter", error_icon[0]);
+}
+
+// Load the code from the problem into the Java and Python CodeMirror objects.
+// Sends an ajax request to the server to get the code.
+var getCode = function() {
+    $.post("/tutor/read",
+        { csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
+          name: $('h1').html().toLowerCase()
+        },
+    populateWithCode);
+}
+
+// Populate the Java and Python CodeMirror objects with code from server
+// Code is sent as ajax in the form {"python": "xxx", "java": "xxx"}
+var populateWithCode = function(result) {
+    var result = $.parseJSON(result);
+    var java_code = result['java'];
+    var python_code = result['python'];
+    $('.java .CodeMirror')[0].CodeMirror.setValue(java_code);
+    $('.python .CodeMirror')[0].CodeMirror.setValue(python_code);
+}
+
+// Reset the code to the template. First asks for confirmation that the user wants to
+// reset their code, then sends an ajax request to update the current response to
+// the template
+var resetCode = function() {
+    var msg = "Are you sure you want to reset your code? " +
+              "This will revert your code back to the template and all changes will be lost."
+    var res = confirm(msg);
+    if (res) {
+        var code = java_codemirror.getValue();
+        $.post("/tutor/reset",
+            { code: code,
+              csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
+              name: $('h1').html().toLowerCase()
+            },
+            parseResetResult);
+    }
+}
+
+// Set the code in the Java CodeMirror to the problem template
+var parseResetResult = function(result) {
+    clearResults();
+    java_codemirror.setValue(result);
 }
 
 
@@ -115,19 +187,34 @@ var compileCode = function() {
 // Handle the compilation results passed back from the server
 // as a string of JSON
 var parseCompileResult = function(result) {
-    // Parse JSON result
-    var result = $.parseJSON(result);
+    clearResults();
 
-    // Update display
-    $('#test_results').empty();
-    $('#compilation_status').empty();
-    $('#compile').attr('disabled', 'true');
-    displayCompilationStatus(result);
-    displayCompilationErrors(result);
+    // If the solution doesn't match template
+    if (result == 'FALSE') {
+        displayDoesNotMatchTemplate();
 
+    // Solution matched template, show compile results
+    } else {
+        // Parse JSON result
+        var result = $.parseJSON(result);
+
+        // Update display
+        $('#compile').attr('disabled', 'true');
+        displayCompilationStatus(result);
+        displayCompilationErrors(result);
+    }
+    
     // Done compiling. Switch back to normal cursor
     $('#overlay').hide();
     document.body.style.cursor = "auto";
+}
+
+// Display a banner that the solution does not match provided template
+var displayDoesNotMatchTemplate = function() {
+    var error = $('<div>');
+    error.html('Your code does not match the template. Please fix.');
+    error.addClass('error');
+    $('#compilation_status').append(error);
 }
 
 // Display the compilation status (succeeded or failed) below the
@@ -195,9 +282,7 @@ var parseRunResult = function(result) {
     var tests = res['tests'];
 
     // Clear previous results
-    $('#test_results').empty();
-    $('#test_summary').empty();
-    $('#compilation_status').empty();
+    clearResults();
 
     // Count test runs, failures, and errors
     var run = 0;
@@ -207,7 +292,7 @@ var parseRunResult = function(result) {
     // Display test results, counting failures, errors, and runs
     for (var i in tests) {
         var test = tests[i];
-        var outcome = displayTestResult(test);
+        var outcome = displayTestResult(test, run);
         if (outcome == 'fail') {
             fail += 1;
         } else if (outcome == 'error') {
@@ -218,6 +303,7 @@ var parseRunResult = function(result) {
 
     // Display test result summary
     displayTestResultSummary(run, fail, error, getFileName(test));
+    showFirstErrorOrFailure();
 
     $('#overlay').hide();
     document.body.style.cursor = "auto"; 
@@ -249,7 +335,7 @@ var toggleTestResultVisibility = function(test_result) {
 
 // Display a single test result. The first test failure will initially be expanded,
 // and all other test result details will be hidden.
-var displayTestResult = function(test) {
+var displayTestResult = function(test, run) {
     var test_result = $("<div>");
 
     // Add button to show test result details
@@ -415,7 +501,7 @@ var buildTestErrorSummary = function(run, error) {
 var isFailure = function(test) {
     exception = test['exception']
     if (exception) {
-        return /^org.junit./.test(exception);
+        return /^org.junit./.test(exception) || /^java.lang.AssertionError/.test(exception);
     } else {
         return false;
     }
@@ -480,4 +566,32 @@ var getTraceSegment = function(test) {
         }
     }
     return trace_segment;
+}
+
+// Display the details for the first error/failure in the test results
+var showFirstErrorOrFailure = function() {
+    var test_number_regex = /test(\d+)/;
+    var first_error = $($('.error')[0]);
+    var first = 99999999;
+    if (first_error.length != 0) {
+        var first_error_position = first_error.attr('class').match(test_number_regex)[1];
+        first = first_error_position
+    }
+    var first_fail = $($('.fail')[0]);
+    if (first_fail.length != 0) {
+        var first_fail_position = first_fail.attr('class').match(test_number_regex)[1];
+        if (first_fail_position < first) {
+            first = first_fail_position;
+        }
+    }
+    if (first < 99999999) {
+        showTestResultDetails($('.test' + first));
+    }
+}
+
+// Clear all previous results (compilation or test)
+var clearResults = function() {
+    $('#test_results').empty();
+    $('#test_summary').empty();
+    $('#compilation_status').empty();
 }

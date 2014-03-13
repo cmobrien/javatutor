@@ -5,25 +5,54 @@ from tutor.models import Problem, Response, ProblemManager
 import re
 import json
 
+def read(request):
+	problem = Problem.objects.get(name = request.POST['name'])
+	code = {}
+	code['python'] = problem.python
+	try:
+		response = problem.responses.get()
+		code['java'] = response.code	
+	except Response.DoesNotExist:
+		code['java'] = problem.template
+	return HttpResponse(json.dumps(code));
+
+def reset(request):
+	problem = Problem.objects.get(name = request.POST['name'])
+	try:
+		response = problem.responses.get()
+		response.code = problem.template
+		response.save()
+	except Response.DoesNotExist:
+		pass
+	return HttpResponse(problem.template)
+
 def compile(request):
 	problem = Problem.objects.get(name = request.POST['name'])
-	compiled = True
 	if request.method == 'POST':
 		code = request.POST['code']
-		compile_errors = Problem.objects.compile_code(problem.name, code)
-		if len(compile_errors) > 0:
-			compiled = False
+		match = checkTemplate(code, problem)
+		if not match:
+			return HttpResponse("FALSE")
 		try:
 			response = problem.responses.get()
 			response.code = code
-			response.compiled = compiled
 		except Response.DoesNotExist:
 			response = Response(
 				code = code,
 				problem_id = problem.id,
-				compiled = compiled)
+				compiled = False)
 		response.save()
+		compile_errors = Problem.objects.compile_code(problem.name, code)
 	return HttpResponse(json.dumps(compile_errors))
+
+def checkTemplate(code, problem):
+	template = problem.template
+	s = template.replace("// Your Code Here", ".*").replace('(', '\\(').replace(')', '\\)')
+	r = re.compile(re.sub(r'\s+', ' ', s))
+	print re.sub(r'\s+', ' ', s)
+	print re.sub(r'\s+', ' ', code)
+	print r.match(code)
+	return r.match(re.sub(r'\s+', ' ', code)) != None
 
 
 def run(request):

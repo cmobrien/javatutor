@@ -19,26 +19,28 @@
   <div class = "wrapper">
     <div class = "container python">
       <div class = "code_container">
-        <textarea id = "id_python" name = "python">{{problem.python}}</textarea>
+        <textarea id = "id_python" name = "python"></textarea>
       </div>
       <div id = "test_summary"></div>
     </div>
     <div class = "container java">
-    	<form method="post">
-    	<div class = "code_container">
-    			<textarea id = "id_response_code" name = "response_code">{{response.code}}</textarea>
-    	</div>
-    	</form>
-    	<button id = "compile">Compile</button>
-    	<button id = "run" disabled = "true">Run</button>
-    	<div id = "compilation_status"></div>
-    	<div id = "test_results"></div>
-		</div>
+      <form method="post">
+      <div class = "code_container">
+          <textarea id = "id_response_code" name = "response_code"></textarea>
+      </div>
+      </form>
+      <button id = "compile">Compile</button>
+      <button id = "run" disabled = "true">Run</button>
+      <button id = "reset">Reset</button>
+      <div id = "compilation_status"></div>
+      <div id = "test_results"></div>
+    </div>
 
 
     </div>
   </div>
 
   <div id = "overlay"></div>
+
 
 
